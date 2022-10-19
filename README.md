@@ -1,4 +1,4 @@
-# https://rctgg.netlify.app/
+# https://rctgg.vercel.app/
 
 # Roller Champions Tracker
 This is a stat tracker for the Ubisoft title Roller Champions.
