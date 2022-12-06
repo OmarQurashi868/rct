@@ -4,23 +4,21 @@ import { useRouter } from "next/router";
 import LoadingScreen from "../components/LoadingScreen";
 import NavBar from "../components/Navbar";
 import { motion } from "framer-motion";
+import { useErrorStore } from "../utils/errorStore";
 import Axios from "axios";
 import DataSchema from "../components/DataSchema";
 import StatBlock from "../components/StatBlock";
 import format from "format-number";
 import GeneralStatBlock from "../components/GeneralStatBlock";
 
-interface Props {
-  setErrorState(error: string): void;
-}
-
 interface Item {
   name: string;
   value: string | number;
 }
 
-const Stats = (props: Props) => {
+const Stats = () => {
   const localeFormat = format();
+  const { setError } = useErrorStore();
 
   const [isLoading, setIsLoading] = useState(true);
   const [info, setInfo] = useState({ title: "Loading", subtitle: "Loading" });
@@ -50,24 +48,16 @@ const Stats = (props: Props) => {
 
   // Redirect to home if parameters are not provided
   if (!username || !platform) {
-    // props.setErrorState("Please input username and platform");
     if (typeof window !== "undefined") {
+      setError("Please input username and platform");
       router.push({
         pathname: "/",
-        query: { error: "Please input username and platform" },
       });
     }
   }
 
-  // const username = () => {
-  //   return router.query.username;
-  // }
-  // const platform = () => {
-  //   return router.query.platform;
-  // }
-
+  // Fetch data
   useEffect(() => {
-    // Fetch data
     setIsLoading(true);
     setViewMode("Ranked");
     const fetchData = async () => {
@@ -80,16 +70,15 @@ const Stats = (props: Props) => {
             setRawData(response.data.stats);
           })
           .catch((error) => {
-            // props.setErrorState(error.response.data.error);
+            setError(error.response.data.error);
             router.push({
               pathname: "/",
-              query: { error: error.response.data.error },
             });
           });
       }
     };
     if (process.env.API_URL) fetchData();
-  }, [router.query]);
+  }, [router.query, platform, router, username, setError]);
 
   useEffect(() => {
     // Init vars
@@ -384,7 +373,7 @@ const Stats = (props: Props) => {
 
       return () => clearTimeout(timer);
     }
-  }, [rawData, viewMode]);
+  }, [rawData, viewMode, localeFormat]);
 
   // Show loading sceen
   if (isLoading) {
@@ -402,21 +391,20 @@ const Stats = (props: Props) => {
 
   return (
     <div>
-      {" "}
       <Head>
-        <title>{`RCT - ${username()}`}</title>
+        <title>{`RCT - ${username}`}</title>
         <meta
-          name={`${username()} - RCT`}
-          content={`Roller Champions stats for ${username()}`}
+          name={`${username} - RCT`}
+          content={`Roller Champions stats for ${username}`}
         />
-        <meta property="og:title" content={`${username()} - RCT`} />
+        <meta property="og:title" content={`${username} - RCT`} />
         <meta
           property="og:image"
           content="https://rctgg.vercel.app/cover.png"
         />
         <meta
           property="og:description"
-          content={`Roller Champions stats for ${username()}`}
+          content={`Roller Champions stats for ${username}`}
         />
         <meta property="og:url" content="https://rctgg.vercel.app" />
         <meta property="og:type" content="website" />

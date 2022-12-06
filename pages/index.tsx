@@ -1,21 +1,21 @@
 import Head from "next/head";
-import { useState } from "react";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
+import { useErrorStore } from "../utils/errorStore";
 import Input from "../components/Input";
-import Select from "../components/Select";
+import PlatformSelect from "../components/PlatformSelect";
 import Button from "../components/Button";
 import NavBar from "../components/Navbar";
 
-interface Props {
-  errorState?: string;
-  setErrorState(error: string): void;
-}
+// TODO: remove axios
+// TODO: install trpc
+// TODO: remove recharts?
+// TODO: remove corner rounding
+// TODO: change platform selection to buttons
 
-const Home = (props: Props) => {
+const Home = () => {
   const router = useRouter();
-  const [errorState, setErrorState] = useState(router.query.error);
-  console.log(errorState)
+  const { error, setError } = useErrorStore();
 
   // Submit handler (save data to localStorage and navigate to stats)
   const submitHandler = (event: React.SyntheticEvent) => {
@@ -71,17 +71,17 @@ const Home = (props: Props) => {
             </div>
           </div>
           <div className="flex flex-col items-center gap-6 mx-2">
-            {errorState && (
+            {error && (
               <div className="text-red-600 self-start text-sm lg:text-lg">
-                {errorState}
+                {error}
               </div>
             )}
             <Input
               placeHolder="Username"
               label="Username"
-              onErrorRemove={setErrorState}
+              onErrorRemove={setError}
             />
-            <Select label="Platform" onErrorRemove={setErrorState} />
+            <PlatformSelect label="Platform" onErrorRemove={setError} />
           </div>
           <Button
             className="px-4 py-1 2xl:px-6 2xl:py-3 2xl:text-3xl"

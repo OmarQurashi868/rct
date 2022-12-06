@@ -1,32 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import Button from "./Button";
-import MoonIcon from "./DarkModeIcon";
+import DarkModeIcon from "./DarkModeIcon";
 import GithubIcon from "./GithubIcon";
 import LogoIcon from "./LogoIcon";
 import Input from "./Input";
-import Select from "./Select";
+import PlatformSelect from "./PlatformSelect";
 
 interface Props {
   searchBar?: boolean;
 }
 
 const Navbar = (props: Props) => {
-  const [darkMode, setDarkMode] = useState("true");
+  const [refreshSwitch, seRefreshSwitch] = useState(false);
   const router = useRouter();
 
   // Check if darkMode is supposed to be on by checking settings in localStorage
-  let mainDiv: HTMLElement | null;
-  if (typeof window != "undefined") {
-    mainDiv = document.getElementById("main");
+  useEffect(() => {
+    const bodyDiv = document.body;
+    bodyDiv.classList.add("ease-in-out", "duration-200");
     if (localStorage.getItem("darkMode") == "false") {
-      mainDiv?.classList.remove("dark");
+      bodyDiv?.classList.remove("bg-theme-bg-dark");
+      bodyDiv?.classList.add("bg-white");
+      bodyDiv?.classList.remove("dark");
     } else {
-      mainDiv?.classList.add("dark");
+      bodyDiv?.classList.remove("bg-white");
+      bodyDiv?.classList.add("bg-theme-bg-dark");
+      bodyDiv?.classList.add("dark");
     }
-  }
+  }, [refreshSwitch]);
 
   // Toggle darkMode and save settings in localStorage
   const toggleDarkMode = () => {
@@ -36,8 +40,7 @@ const Navbar = (props: Props) => {
       } else {
         localStorage.setItem("darkMode", "false");
       }
-      mainDiv?.classList.toggle("dark");
-      setDarkMode(localStorage.getItem("darkMode") || "true");
+      seRefreshSwitch(!refreshSwitch);
     }
   };
 
@@ -68,7 +71,7 @@ const Navbar = (props: Props) => {
         transition={{ duration: 0.25 }}
         className="flex flex-row gap-0 justify-center md:h-6 "
       >
-        <Select
+        <PlatformSelect
           className="rounded-r-none font-normal text-black !text-xs !px-1 text-center !shadow-none border-r-white"
           divClassName="!w-3/12 text-center"
         />
@@ -97,7 +100,7 @@ const Navbar = (props: Props) => {
     >
       <form onSubmit={submitHandler}>
         <div className="flex flex-row gap-0 w-full justify-center">
-          <Select
+          <PlatformSelect
             className="rounded-r-none !h-6 font-normal 2xl:h-8 text-black !text-xs !shadow-none !px-1 text-center border-r-white"
             divClassName="!w-2/12 text-center"
           />
@@ -140,7 +143,7 @@ const Navbar = (props: Props) => {
             <GithubIcon />
           </a>
           <button onClick={toggleDarkMode}>
-            <MoonIcon />
+            <DarkModeIcon />
           </button>
         </div>
       </div>

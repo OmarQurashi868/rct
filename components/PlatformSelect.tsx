@@ -5,7 +5,7 @@ interface Params {
   onErrorRemove?(error: string): void;
 }
 
-const Select = (props: Params) => {
+const PlatformSelect = (props: Params) => {
   const errorRemovalHandler = () => {
     if (props.onErrorRemove) props.onErrorRemove("");
   };
@@ -53,4 +53,4 @@ const Select = (props: Params) => {
   );
 };
 
-export default Select;
+export default PlatformSelect;
