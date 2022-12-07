@@ -31,7 +31,7 @@ const Input = (props: Params) => {
       )}
       <input
         className={
-          "px-2 md:px-4 text-lg h-8 2xl:h-14 2xl:text-3xl bg-white border outline-none hover:border-theme-accent ease-in-out duration-200" +
+          "px-2 md:px-4 text-lg h-8 2xl:h-14 2xl:text-3xl bg-white border outline-none hover:border-theme-accent ease-in-out duration-200 rounded-sm" +
           " " +
           props.className
         }

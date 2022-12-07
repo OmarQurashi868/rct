@@ -14,7 +14,7 @@ interface Props {
 }
 
 const Navbar = (props: Props) => {
-  const [refreshSwitch, seRefreshSwitch] = useState(false);
+  const [refreshSwitch, setRefreshSwitch] = useState(false);
   const router = useRouter();
 
   // Check if darkMode is supposed to be on by checking settings in localStorage
@@ -40,7 +40,7 @@ const Navbar = (props: Props) => {
       } else {
         localStorage.setItem("darkMode", "false");
       }
-      seRefreshSwitch(!refreshSwitch);
+      setRefreshSwitch(!refreshSwitch);
     }
   };
 
@@ -124,13 +124,13 @@ const Navbar = (props: Props) => {
     <>
       <div className="w-full bg-black dark:bg-white shadow-md h-9 fixed top-0 left-0 flex flex-row items-center text-white font-bold px-4 md:px-6 lg:px-16 text-xl justify-between select-none z-50">
         <div>
-          <Link href="/">
-            <a className="ease-in-out duration-200 text-2xl flex flex-row items-center">
+          <Link href="/" className="ease-in-out duration-200 text-2xl flex flex-row items-center">
+
               <LogoIcon />
               <span className="dark:text-black ease-in-out duration-200 font-extrabold">
                 RCT
               </span>
-            </a>
+  
           </Link>
         </div>
         <div className="flex flex-row gap-4 items-center">

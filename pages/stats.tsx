@@ -47,19 +47,25 @@ const Stats = () => {
   const platform = searchParams["platform"];
 
   // Redirect to home if parameters are not provided
-  if (!username || !platform) {
-    if (typeof window !== "undefined") {
+  // if (!username || !platform) {
+  //   if (typeof window !== "undefined") {
+  //     setError("Please input username and platform");
+  //     router.push("/");
+  //   }
+  // }
+  useEffect(() => {
+    if (!username || !platform) {
       setError("Please input username and platform");
-      router.push({
-        pathname: "/",
-      });
+      router.push("/");
     }
-  }
+  }, [username, platform,  router, setError]);
 
   // Fetch data
   useEffect(() => {
     setIsLoading(true);
     setViewMode("Ranked");
+    // TODO: remove axios
+    // TODO: switch to trpc
     const fetchData = async () => {
       if (process.env.API_URL) {
         Axios.get(process.env.API_URL, {
@@ -78,7 +84,7 @@ const Stats = () => {
       }
     };
     if (process.env.API_URL) fetchData();
-  }, [router.query, platform, router, username, setError]);
+  }, [username, platform, router,setError]);
 
   useEffect(() => {
     // Init vars
@@ -373,7 +379,8 @@ const Stats = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [rawData, viewMode, localeFormat]);
+  }, [localeFormat, rawData, viewMode]);
+  // rawData, viewMode
 
   // Show loading sceen
   if (isLoading) {

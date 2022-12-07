@@ -7,10 +7,7 @@ import PlatformSelect from "../components/PlatformSelect";
 import Button from "../components/Button";
 import NavBar from "../components/Navbar";
 
-// TODO: remove axios
-// TODO: install trpc
 // TODO: remove recharts?
-// TODO: remove corner rounding
 // TODO: change platform selection to buttons
 
 const Home = () => {
